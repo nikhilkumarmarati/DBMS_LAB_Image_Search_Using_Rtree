@@ -1,0 +1,36 @@
+CXX = g++
+CXXFLAGS = -std=c++17 -O3 -MMD -MP -D_GLIBCXX_USE_CXX11_ABI=0
+
+# Use pkg-config for OpenCV
+CXXFLAGS += $(shell pkg-config --cflags opencv4)
+
+# Paths for LibTorch
+TORCH_PATH = /usr/local/libtorch
+CXXFLAGS += -I$(TORCH_PATH)/include -I$(TORCH_PATH)/include/torch/csrc/api/include
+
+# Correct linking order
+LDFLAGS = -Wl,-rpath,/usr/local/libtorch/lib -L/usr/local/libtorch/lib -ltorch -ltorch_cpu -lc10
+LDFLAGS += $(shell pkg-config --libs opencv4) -lpthread -ldl
+
+# Source files
+SRCS = main_rtree.cpp
+OBJS = $(SRCS:.cpp=.o)
+DEPS = $(OBJS:.o=.d)
+TARGET = rtree_image_search
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJS) $(DEPS) $(TARGET)
+clear_tree:
+	rm -rf rtree.bin features.bin
+
+-include $(DEPS)
+
+.PHONY: all clean
