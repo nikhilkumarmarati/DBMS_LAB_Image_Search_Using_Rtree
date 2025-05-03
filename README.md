@@ -1,8 +1,8 @@
 # DBMS_LAB_Image_Search_Using_Rtree
 
-# --------------------------------------
-# Setup and Run Instructions
-# --------------------------------------
+ --------------------------------------
+ Setup and Run Instructions
+ --------------------------------------
 
 # 1. (Optional) Create and activate a virtual environment
 python -m venv venv
@@ -17,8 +17,8 @@ venv\Scripts\activate
 pip install -r requirements.txt
 
 # 3. Ensure C++ build tools are installed (required for pybind11)
-#    - Linux/macOS: install build-essential
-#    - Windows: install MSVC or mingw-w64 (e.g., via Chocolatey)
+    - Linux/macOS: install build-essential
+    - Windows: install MSVC or mingw-w64 (e.g., via Chocolatey)
 
 # 4. Download and extract the STL-10 binary dataset
 mkdir -p stl10_binary
@@ -35,8 +35,6 @@ c++ -O3 -Wall -shared -std=c++17 -fPIC \
   $(python3 -m pybind11 --includes) \
   rtree.cpp -o rtree.so \
   $(python3-config --ldflags)
-
-# (Windows users: adapt this command using g++ or MSVC equivalent)
 
 # --------------------------------------
 # Usage
